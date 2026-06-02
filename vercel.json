@@ -6,6 +6,22 @@
       "destination": "/api/support-chat.js"
     },
     {
+      "source": "/global/(.*)",
+      "destination": "/global/$1"
+    },
+    {
+      "source": "/private/(.*)",
+      "destination": "/private/$1"
+    },
+    {
+      "source": "/seiten/(.*)",
+      "destination": "/seiten/$1"
+    },
+    {
+      "source": "/",
+      "destination": "/seiten/index.html"
+    },
+    {
       "source": "/(.*)",
       "destination": "/seiten/$1"
     }
