@@ -20,7 +20,7 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: 'Methode nicht erlaubt. Bitte nutze POST.' });
   }
 
-  const API_KEY = process.env.GEMINI_API_KEY;
+  const API_KEY = process.env.GEMINI_API_KEY || "AQ.Ab8RN6K4Z7adQS1F5tH8TkffjbhuNE1JBSHloSo_lsIOhkbrRQ";
 
   if (!API_KEY) {
     return res.status(500).json({ error: 'Server-Konfigurationsfehler: API-Key fehlt.' });
@@ -56,7 +56,7 @@ export default async function handler(req, res) {
     let text = await response.text();
 
     if (typeof text === 'string' && text.includes('```')) {
-      text = text.replace(/```(?:[a-zA-Z0-9]+)?\n([\s\S]*?)```/g, "<pre class='nexus-code-window'><code>$1</code></pre>");
+      text = text.replace(/```(?:[a-zA-Z0-9]+)?\n([\s\S]*?)```/g, "<pre class='nexus-code-window'><button class='code-copy-btn' onclick='window.copyNexusCode(this)'><i class='far fa-copy'></i> Kopieren</button><code>$1</code></pre>");
     }
 
     return res.status(200).json({ text });

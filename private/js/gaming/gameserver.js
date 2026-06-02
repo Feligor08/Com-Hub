@@ -1,8 +1,18 @@
 function GameserverPage() {
+  const [copiedIp, setCopiedIp] = React.useState(null);
+
   const servers = [
     { name: "Survival Minecraft", ip: "mc.pixelandcode.de", status: "Online", players: "12/50" },
     { name: "CS2 Community Server", ip: "cs.pixelandcode.de", status: "Online", players: "8/10" }
   ];
+
+  const handleCopy = (ip) => {
+    navigator.clipboard.writeText(ip);
+    setCopiedIp(ip);
+    setTimeout(() => {
+      setCopiedIp(null);
+    }, 2000);
+  };
 
   return (
     <div className="page-container">
@@ -22,7 +32,19 @@ function GameserverPage() {
                 <h3 style={{marginTop: '10px'}}>{srv.name}</h3>
                 <div style={{background: 'rgba(0,0,0,0.3)', padding: '10px', borderRadius: '6px', marginTop: '10px', display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
                     <code style={{margin: 0}}>{srv.ip}</code>
-                    <button className="btn-nav" onClick={() => alert('IP kopiert!')} style={{padding: '4px 10px', fontSize: '0.8rem'}}><i className="fas fa-copy"></i> Kopieren</button>
+                    <button 
+                      className="btn-nav" 
+                      onClick={() => handleCopy(srv.ip)} 
+                      style={{
+                        padding: '4px 10px', 
+                        fontSize: '0.8rem',
+                        background: copiedIp === srv.ip ? '#10b981' : '',
+                        borderColor: copiedIp === srv.ip ? '#10b981' : '',
+                        color: copiedIp === srv.ip ? '#ffffff' : ''
+                      }}
+                    >
+                      <i className={copiedIp === srv.ip ? "fas fa-check" : "fas fa-copy"}></i> {copiedIp === srv.ip ? "Kopiert!" : "Kopieren"}
+                    </button>
                 </div>
                 <p style={{marginTop: '15px', fontSize: '0.85rem'}}><i className="fas fa-users"></i> {srv.players} Spieler online</p>
               </div>
