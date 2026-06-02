@@ -3,7 +3,7 @@ function HomePage() {
 
   return (
     <div className="page-container">
-      <Navigation activePage="home" />
+      <Navigation basePath="." />
       
       <div style={{marginTop: '80px'}} className="animate-fade-in">
         <header className="hero">
@@ -24,8 +24,6 @@ function HomePage() {
           <div className="stat-item"><span className="stat-num">{stats.projects}</span><span className="stat-label">Projekte</span></div>
         </section>
       </div>
-      // In deiner HomePage Komponente:
-      <Navigation basePath="." />
 
       <Footer />
     </div>

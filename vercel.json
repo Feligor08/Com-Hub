@@ -19,7 +19,7 @@
     },
     {
       "source": "/",
-      "destination": "/seiten/index.html"
+      "destination": "/index.html"
     },
     {
       "source": "/(.*)",

@@ -1,9 +1,4 @@
-import { GoogleGenerativeAI } from "@google/generative-ai";
-
 function SupportPage() {
-  // HIER DEINEN GEMINI API-KEY EINTRAGEN
-  const API_KEY = "AQ.Ab8RN6K4Z7adQS1F5tH8TkffjbhuNE1JBSHloSo_lsIOhkbrRQ";
-  
   const [messages, setMessages] = React.useState([
     { sender: 'bot', text: 'Hallo! Ich bin Nexus AI, angetrieben von Google Gemini. Ich kann dir jetzt echten Code schreiben, komplexe Fehler analysieren oder Fragen zur Community beantworten. Schieß los! 🤖' }
   ]);
@@ -15,39 +10,27 @@ function SupportPage() {
     chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages, isTyping]);
 
-  // Funktion, die die Gemini API aufruft
+  // Funktion, die die Gemini API über den Vercel Serverless Endpoint aufruft
   const askGemini = async (userPrompt) => {
-    if (API_KEY === "AQ.Ab8RN6K4Z7adQS1F5tH8TkffjbhuNE1JBSHloSo_lsIOhkbrRQ") {
-      return "<strong>System-Fehler:</strong> Bitte trage zuerst deinen funktionierenden Gemini API-Key in der Datei <code>support.js</code> ein! 🔑";
-    }
-
     try {
-      // Initialisiert die Google KI
-      const genAI = new GoogleGenerativeAI(API_KEY);
-      
-      // Wir nutzen das schnelle und kostengünstige gemini-1.5-flash Modell
-      const model = genAI.getGenerativeModel({ 
-        model: "gemini-1.5-flash",
-        // Hier geben wir der KI fest vor, wie sie sich verhalten soll
-        systemInstruction: "Du bist Nexus AI, der Support-Bot für die Gaming- und Coding-Community 'Pixel & Code'. " +
-                           "Du antwortest immer auf Deutsch, bist freundlich, nutzt gerne Entwickler-Slang und Emojis. " +
-                           "Unsere Minecraft-Server-IP lautet mc.pixelandcode.de. Unser Spieleprojekt heißt Nexus Code Play. " +
-                           "Formatiere Code-Antworten immer in <pre class='nexus-code-window'><code>...</code></pre> Blöcken."
+      const response = await fetch('/api/support-chat', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ message: userPrompt })
       });
 
-      const result = await model.generateContent(userPrompt);
-      const response = await result.response;
-      let text = response.text();
-
-      // Kleine Bereinigung: Falls Gemini Markdown ``` verwendet, wandeln wir es in unsere CSS-Klassen um
-      if (text.includes("```")) {
-        text = text.replace(/```(?:css|html|javascript|js)?([\s\S]*?)```/g, "<pre class='nexus-code-window'><code>$1</code></pre>");
+      if (!response.ok) {
+        const errData = await response.json();
+        throw new Error(errData.error || 'Server-Fehler');
       }
 
-      return text;
+      const data = await response.json();
+      return data.text;
     } catch (error) {
       console.error("Gemini API Fehler:", error);
-      return "Huch, meine KI-Verbindung hatte gerade einen kleinen Lag. Bitte versuche es noch einmal! 🌐";
+      return "Huch, meine KI-Verbindung hatte gerade einen kleinen Lag oder der Support-Server ist offline. Bitte versuche es noch einmal! 🌐";
     }
   };
 
