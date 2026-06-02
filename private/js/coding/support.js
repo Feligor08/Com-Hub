@@ -17,7 +17,7 @@ function SupportPage() {
 
   // Funktion, die die Gemini API aufruft
   const askGemini = async (userPrompt) => {
-    if (API_KEY === "HIER_DEINEN_GEMINI_API_KEY_EINSETZEN") {
+    if (API_KEY === "AQ.Ab8RN6K4Z7adQS1F5tH8TkffjbhuNE1JBSHloSo_lsIOhkbrRQ") {
       return "<strong>System-Fehler:</strong> Bitte trage zuerst deinen funktionierenden Gemini API-Key in der Datei <code>support.js</code> ein! 🔑";
     }
 
