@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "rewrites": [
+    {
+      "source": "/api/support-chat",
+      "destination": "/api/support-chat.js"
+    },
+    {
+      "source": "/(.*)",
+      "destination": "/seiten/$1"
+    }
+  ]
+}
